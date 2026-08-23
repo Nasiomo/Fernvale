@@ -1,49 +1,72 @@
 package de.nasiomo.fernvale.core;
 
-import de.nasiomo.fernvale.menu.MainMenu;
+import de.nasiomo.fernvale.world.World;
+import de.nasiomo.fernvale.player.Player;
+import de.nasiomo.fernvale.render.Renderer;
 
 public class Game {
     private Window window;
-    private MainMenu mainMenu;
-    private boolean running = false;
+    private Renderer renderer;
+    private World world;
+    private Player player;
+    private Time time;
+    private boolean running = true;
 
     public Game() {
-        // Create window with 1280x720 resolution
-        window = new Window(1280, 720, "Fernvale - Minecraft Clone");
-        mainMenu = new MainMenu();
+        this.time = new Time();
     }
 
     public void run() {
-        running = true;
-
-        // Game loop
-        while (window.isOpen() && running) {
-            update();
-            render();
+        try {
+            initialize();
+            gameLoop();
+        } finally {
+            cleanup();
         }
-
-        cleanup();
     }
 
-    private void update() {
-        mainMenu.update();
+    private void initialize() {
+        System.out.println("Initializing Fernvale...");
+        
+        window = new Window(1280, 720, "Fernvale - Minecraft Clone");
+        window.show();
+        
+        renderer = new Renderer();
+        world = new World();
+        player = new Player();
+        
+        System.out.println("Game initialized successfully!");
     }
 
-    private void render() {
-        window.clear();
-        mainMenu.render();
-        window.update();
+    private void gameLoop() {
+        System.out.println("Starting game loop...");
+        
+        while (running && !window.shouldClose()) {
+            time.update();
+            
+            // Update
+            update(time.getDeltaTime());
+            
+            // Render
+            renderer.clear();
+            renderer.render(world, player);
+            window.swapBuffers();
+            window.pollEvents();
+        }
+    }
+
+    private void update(float deltaTime) {
+        // Handle input
+        if (window.isKeyPressed(256)) { // ESC key
+            running = false;
+        }
+        
+        player.update(deltaTime, window);
     }
 
     private void cleanup() {
-        window.close();
-    }
-
-    public Window getWindow() {
-        return window;
-    }
-
-    public void stop() {
-        running = false;
+        System.out.println("Shutting down...");
+        if (renderer != null) renderer.cleanup();
+        if (window != null) window.close();
     }
 }
