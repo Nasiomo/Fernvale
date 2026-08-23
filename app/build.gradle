@@ -1,10 +1,15 @@
 plugins {
-    id 'application'
     id 'java'
+    id 'application'
 }
 
 repositories {
     mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
@@ -20,15 +25,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-
 application {
     mainClass = 'de.nasiomo.fernvale.Main'
-}
-
-tasks.named('run', JavaExec) {
-    jvmArgs = ['-XstartOnFirstThread']
 }
