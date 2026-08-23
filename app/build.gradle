@@ -7,9 +7,30 @@ repositories {
 }
 
 dependencies {
+    // OpenGL & Window Management
+    implementation 'org.lwjgl:lwjgl:3.3.3'
+    implementation 'org.lwjgl:lwjgl-glfw:3.3.3'
+    implementation 'org.lwjgl:lwjgl-opengl:3.3.3'
+    runtimeOnly 'org.lwjgl:lwjgl-glfw:3.3.3:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-opengl:3.3.3:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl:3.3.3:natives-windows'
+    
+    // Math Library
+    implementation 'org.joml:joml:1.10.5'
+    
+    // Image Loading
+    implementation 'org.lwjgl:lwjgl-stb:3.3.3'
+    runtimeOnly 'org.lwjgl:lwjgl-stb:3.3.3:natives-windows'
+    
+    // Testing
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
 application {
     mainClass = 'de.nasiomo.fernvale.Main'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
