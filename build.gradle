@@ -1,5 +1,36 @@
-// Root build file for Fernvale
+// Root build file for Fernvale multi-project build
+plugins {
+    id 'java'
+    id 'application'
+}
+
 allprojects {
     group = 'de.nasiomo.fernvale'
     version = '1.0.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+    
+    repositories {
+        mavenCentral()
+    }
+    
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+}
+
+// Make app subproject tasks available at root level
+task run {
+    dependsOn ':app:run'
+}
+
+task build {
+    dependsOn ':app:build'
+}
+
+task clean {
+    dependsOn ':app:clean'
 }
